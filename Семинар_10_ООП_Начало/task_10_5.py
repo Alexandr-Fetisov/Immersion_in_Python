@@ -8,82 +8,62 @@
 информацию специфичную для данного класса.
 """
 
-class Fishes:
-
-    def __init__(self, kind, name, age, size):
-        self._kind = kind
-        self._name = name
-        self._age = age
-        self._size = size
-
-    def get_kind(self):
-        return self._kind
-
-    def get_name(self):
-        return self._name
+class Animal:
+    def __init__(self, name, age):
+        self.age = age
+        self.name = name
 
     def get_age(self):
-        return self._age
-
-    def up_age(self):
-        self._age += 1
-
-    def get_specific(self):
-        return self._size
-
-
-class Birds:
-
-    def __init__(self, kind, name, age, color):
-        self._kind = kind
-        self._name = name
-        self._age = age
-        self._color = color
-
-    def get_kind(self):
-        return self._kind
+        return self.age
 
     def get_name(self):
-        return self._name
-
-    def get_age(self):
-        return self._age
-
-    def up_age(self):
-        self._age += 1
-
-    def get_specific(self):
-        return self._color
+        return self.name
 
 
-class Mammals:
+class Fish(Animal):
+    def __init__(self, name, age, feature, type=None):
+        super().__init__(name, age)
+        self.feature = feature
+        self.type = type or self.check_type()
 
-    def __init__(self, kind, name, age, spec):
-        self._kind = kind
-        self._name = name
-        self._age = age
-        self._spec = spec
+    def check_type(self):
+        return ("Мелководная", "Глубоководная")[self.feature > 500]
 
-    def get_kind(self):
-        return self._kind
+    def __str__(self):
+        return f'Имя: {self.name}\nВозраст: {self.age}\nГлубина: {self.feature}\nТип: {self.type}\n'
 
-    def get_name(self):
-        return self._name
 
-    def get_age(self):
-        return self._age
+class Bird(Animal):
+    def __init__(self, name, age, feature, type=None):
+        super().__init__(name, age)
+        self.feature = feature
+        self.type = type or self.check_type()
 
-    def up_age(self):
-        self._age += 1
+    def check_type(self):
+        return ("Небольшой размах", "Большой размах")[self.feature > 3]
 
-    def get_specific(self):
-        return self._spec
+    def __str__(self):
+        return f'Имя: {self.name}\nВозраст: {self.age}\nРазмах крыльев: {self.feature}\nТип: {self.type}\n'
+
+
+class Mammals(Animal):
+    def __init__(self, name, age, feature, type=None):
+        super().__init__(name, age)
+        self.feature = feature
+        self.type = type or self.check_type()
+
+    def check_type(self):
+        return ("Мелкий", "Крупный")[self.feature > 100]
+
+    def __str__(self):
+        return f'Имя: {self.name}\nВозраст: {self.age}\nВес: {self.feature}\nТип: {self.type}\n'
 
 
 if __name__ == '__main__':
-    f1 = Fishes('Карась', 'Федя', 1, 15)
+    f = Fish('Карась', 1, 20)
+    b = Bird('Каркуша', 2, 2)
+    m = Mammals('Михалыч', 12, 142)
 
-    print(f'Вид: {f1.get_kind()}')
-    print(f'кличка: {f1.get_name()}')
-    print(f'возраст: {f1.get_age()} лет')
-    print(f'размер: {f1.get_specific()} см.')
+    print(f)
+    print(b)
+    print(m)
