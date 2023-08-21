@@ -3,7 +3,6 @@
 параметры в свойства. Задачи должны решаться через вызов методов
 экземпляра. """
 
-
 import os
 from random import randint, uniform
 from pathlib import Path
