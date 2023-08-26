@@ -4,48 +4,74 @@
 """
 """К задаче Создайте класс студента."""
 
-
-class UserException(Exception):
-    pass
+import csv
 
 
-class UserTypeStrError(UserException):
-    def __init__(self, value):
-        self.value = value
-
-    def __str__(self):
-        return f'Значение {self.value} должно содержать только текст'
+class NameTypeError(Exception):
+    def __init__(self, message):
+        self.message = message
 
 
-class UserTypeTextError(UserException):
-    def __init__(self, value):
-        self.value = value
+class VerificName:
+    def check(self, value: str):
+        if value != value.capitalize() or not value.isalpha():
+            raise TypeError(
+                'Первая буква должна быть заглавной! ФИО содержит только буквы!')
 
-    def __str__(self):
-        if not self.value.isalpha():
-            return f'Значение {self.value} должно содержать только буквы'
-        elif not self.value.istitle():
-            return f'Значение {self.value} должно начинаться с заглавной буквы'
+    def __set_name__(self, owner, name):
+        self.name = "_" + name
 
+    def __get__(self, instance, owner):
+        return getattr(instance, self.name)
 
-class UserLessonsError(UserException):
-    def __init__(self, value):
-        self.value = value
-
-    def __str__(self):
-        return f'"Предмет {self.value} данным студентом не изучался"'
+    def __set__(self, instance, value):
+        self.check(value)
+        setattr(instance, self.name, value)
 
 
-class UserEstimateError(UserException):
-    def __init__(self, value, lower, upper):
-        self.value = value
-        self.lower = lower
-        self.upper = upper
+def lesson_from_csv():
+    try:
+        with open('lessons.csv', 'r', encoding='utf-8', newline='') as csv_f:
+            csv_file = [*csv.reader(csv_f)]
+            lesson = []
+            grade = []
+            test = []
+            for i in range(1, len(csv_file)):
+                lesson.append(csv_file[i][0])
+                temp1 = csv_file[i][1].split()
+                grade.append((sum(map(int, temp1))) / (len(temp1)))
+                temp2 = csv_file[i][2].split()
+                test.append((sum(map(int, temp2))) / (len(temp2)))
 
-    def __str__(self):
-        text = ''
-        if self.value < self.lower:
-            text = 'меньше нижней'
-        elif self.value > self.lower:
-            text = 'больше верхней'
-        return f'Оценка {self.value} {text} границы. Попадите в диапазон ({self.lower}, {self.upper}).'
+        for j in range(len(lesson)):
+            print(f"Предмет: {lesson[j]} Средняя оценка: {grade[j]:.2f} Средний балл: {test[j]:.2f}")
+        print(f"Средняя оценка: {sum(grade) / len(grade):.2f}  Средний балл: {sum(test) / len(test):.2f}")
+    except FileNotFoundError:
+        print("Файл 'lessons.csv' не найден!")
+        # вывод информации если файл csv отсутствует
+
+
+class Student:
+    firstname = VerificName()
+    patronymic = VerificName()
+    name = VerificName()
+
+    def __init__(self, firstname: str, name: str, patronymic: str):
+        self.firstname = firstname
+        self.patronymic = patronymic
+        self.name = name
+
+    def __repr__(self):
+        return f"{self.firstname} {self.name} {self.patronymic}"
+
+
+if __name__ == "__main__":
+    try:
+        stud = Student("Сидоров", "Пётр", "Иванович")
+        # допустить ошибку в ФИО, например вместо буквы поставить цифру или символ
+        print(repr(stud))
+        lesson_from_csv()
+    except NameTypeError as e:
+        print(f"Ошибка при проверке имени: {e.message}")
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
