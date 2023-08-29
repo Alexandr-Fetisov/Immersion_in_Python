@@ -75,3 +75,4 @@ if __name__ == "__main__":
         print(f"Ошибка при проверке имени: {e.message}")
     except Exception as e:
         print(f"Произошла ошибка: {e}")
+
