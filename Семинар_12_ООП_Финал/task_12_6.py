@@ -6,6 +6,7 @@
 
 """
 
+
 class Validator:
     def __init__(self, min_value, max_value):
         self.min_value = min_value
