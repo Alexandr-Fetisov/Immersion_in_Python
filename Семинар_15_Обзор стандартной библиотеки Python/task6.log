@@ -1,0 +1,4 @@
+INFO>>>  PathData(name='Subdirectory', extension=None, is_dir=True, parent_dir='Testdir') (time 02-09-2023 18:29:40)
+INFO>>>  PathData(name='__pycache__', extension=None, is_dir=True, parent_dir='Subdirectory') (time 02-09-2023 18:29:40)
+INFO>>>  PathData(name='test_1', extension='.py', is_dir=False, parent_dir='Testdir') (time 02-09-2023 18:29:40)
+INFO>>>  PathData(name='test_2', extension='.py', is_dir=False, parent_dir='Testdir') (time 02-09-2023 18:29:40)
